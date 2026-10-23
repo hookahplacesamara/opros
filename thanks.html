@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#080808">
+<title>Спасибо — HookahPlace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Oswald:wght@600&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { max-width: 100%; overflow-x: hidden; overflow-x: clip; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+    body {
+        background: #080808;
+        color: #fff;
+        font-family: "Inter", Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        line-height: 1.55;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 26px 16px 48px;
+    }
+
+    .glow {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 640px;
+        height: 640px;
+        transform: translate(-50%, -62%);
+        background: radial-gradient(closest-side, rgba(200,0,0,0.38), rgba(120,0,0,0.1) 60%, transparent);
+        filter: blur(20px);
+        pointer-events: none;
+    }
+
+    .logo { position: relative; display: block; width: 150px; height: auto; }
+
+    main {
+        position: relative;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        max-width: 420px;
+        animation: rise 0.6s cubic-bezier(0.32, 0.72, 0, 1) both;
+    }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+    .cross {
+        width: 84px;
+        height: 84px;
+        margin-bottom: 28px;
+        filter: drop-shadow(0 0 30px rgba(255,0,0,0.6));
+        animation: spin-in 1s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @keyframes spin-in { from { opacity: 0; transform: rotate(-90deg) scale(0.5); } to { opacity: 1; transform: none; } }
+
+    h1 {
+        font-family: "Oswald", "Bebas Neue", "Arial Narrow", Arial, sans-serif;
+        font-weight: 600;
+        font-size: clamp(48px, 14vw, 72px);
+        line-height: 0.95;
+        overflow-wrap: anywhere;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+    }
+    .lead { color: #8a8a8a; font-size: 15px; }
+
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="glow" aria-hidden="true"></div>
+<img src="logo.svg" alt="HookahPlace" class="logo" width="150" height="24">
+
+<main>
+    <svg class="cross" viewBox="58 0 18 18.6" aria-hidden="true"><path d="M75.5175 7.1954C75.5175 7.1954 73.4219 8.53857 73.4219 9.27103C73.4219 10.0081 75.5175 11.3499 75.5175 11.3499C74.7426 14.5049 72.2603 16.9977 69.0893 17.8006C69.0893 17.8006 67.744 15.75 67.0163 15.75C66.2653 15.75 64.8902 17.8519 64.8902 17.8519C61.6164 17.1129 59.0332 14.5786 58.2451 11.3499C58.2451 11.3499 60.3414 10.0081 60.3414 9.27103C60.3414 8.53857 58.2451 7.1954 58.2451 7.1954C59.0239 4.00232 61.5607 1.48972 64.7873 0.717773C64.7873 0.717773 66.1367 2.79406 66.8776 2.79406C67.6206 2.79406 68.9805 0.717773 68.9805 0.717773C72.1979 1.48906 74.7393 4.00232 75.5175 7.1954Z" fill="#FF0000"/></svg>
+    <h1 id="title">Спасибо!</h1>
+    <p class="lead">Ваш отзыв получен. Он помогает нам делать каждый вечер в HookahPlace лучше. Ждём вас снова!</p>
+</main>
+
+<script>
+(function () {
+    var n = '';
+    try { n = sessionStorage.getItem('guestName') || ''; } catch (e) {}
+    if (n) document.getElementById('title').textContent = 'Спасибо, ' + n + '!';
+})();
+</script>
+
+</body>
+</html>
