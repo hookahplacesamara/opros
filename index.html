@@ -364,6 +364,88 @@
         .question { font-size: 20px; }
     }
 
+    /* Галочка согласия */
+    .consent-field { border-bottom: none; padding-bottom: 0; }
+    .check { display: flex; align-items: flex-start; gap: 14px; cursor: pointer; }
+    .check input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+    .check .box { flex-shrink: 0; width: 24px; height: 24px; margin-top: 1px; border: 1px solid #5a5a5a; display: grid; place-items: center; color: transparent; transition: background 0.15s, border-color 0.15s, color 0.15s; }
+    .check .box svg { width: 16px; height: 16px; }
+    .check input:checked + .box { background: var(--red-deep); border-color: var(--red-deep); color: #fff; }
+    .check input:focus-visible + .box { outline: 2px solid #fff; outline-offset: 2px; }
+    .check-text { color: #c4c4c4; font-size: 14px; line-height: 1.5; }
+    .field.invalid .check .box { border-color: var(--error); }
+    button.link { background: none; border: none; padding: 0; color: #fff; font: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--red); cursor: pointer; }
+    button.link:hover { color: var(--red); }
+
+    /* Уведомление о данных и куки */
+    .cookie-bar {
+        position: fixed;
+        left: 50%;
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        width: calc(100% - 32px);
+        max-width: 560px;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 16px 16px 18px;
+        background: #141414;
+        border: 1px solid #333;
+        box-shadow: 0 18px 50px rgba(0,0,0,0.6);
+        z-index: 90;
+        animation: bar-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .cookie-bar[hidden] { display: none; }
+    .cookie-bar p { color: #c4c4c4; font-size: 13px; line-height: 1.5; }
+    .bar-ok {
+        flex-shrink: 0;
+        padding: 11px 22px;
+        background: var(--red-deep);
+        border: 1px solid var(--red-deep);
+        color: #fff;
+        font-family: var(--display);
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+    .bar-ok:hover { background: var(--red); }
+    @keyframes bar-in { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+    @media (max-width: 480px) {
+        .cookie-bar { flex-direction: column; align-items: stretch; gap: 12px; }
+        .bar-ok { width: 100%; }
+    }
+
+    /* Окно «Подробнее» */
+    .privacy {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: calc(100% - 32px);
+        max-width: 520px;
+        max-height: calc(100vh - 48px);
+        display: flex;
+        flex-direction: column;
+        background: #0e0e0e;
+        border: 1px solid #333;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -46%) scale(0.97);
+        transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+        z-index: 120;
+    }
+    .privacy.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
+    .privacy-body { overflow-y: auto; overscroll-behavior: contain; padding: 28px 24px 8px; }
+    .privacy h2 { font-family: var(--display); font-weight: 600; font-size: 28px; line-height: 1.05; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 12px; }
+    .privacy h3 { font-family: var(--display); font-weight: 500; font-size: 17px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--red); margin: 20px 0 6px; }
+    .privacy p, .privacy li { color: #c4c4c4; font-size: 14px; line-height: 1.55; }
+    .privacy ul { padding-left: 18px; margin: 6px 0; }
+    .privacy li { margin: 4px 0; }
+    .privacy-foot { padding: 16px 24px 22px; border-top: 1px solid #262626; }
+    .privacy-foot .submit { font-size: 18px; padding: 14px 20px; }
+    #privacyBackdrop { z-index: 110; }
+
     /* Заставка при открытии: красный крест на чёрном «вылетает» на зрителя, за ним проявляется анкета. Всего 0,9 с */
     .intro {
         position: fixed;
@@ -468,24 +550,33 @@
         <div class="field">
             <span class="question"><span class="num">04</span>Оцените кальян<span class="opt-tag">по желанию</span></span>
             <div class="rating">
-                <input type="radio" id="h1r" name="Кальян" value="Удовлетворительно"><label for="h1r"><span class="dots"><i></i></span>Удовлетворительно</label>
-                <input type="radio" id="h2r" name="Кальян" value="Хорошо"><label for="h2r"><span class="dots"><i></i><i></i></span>Хорошо</label>
-                <input type="radio" id="h3r" name="Кальян" value="Отлично"><label for="h3r"><span class="dots"><i></i><i></i><i></i></span>Отлично</label>
+                <input type="radio" id="h1r" name="Кальян" value="Удовлетворительно"><label for="h1r"><span class="dots"><i></i></span>Бывало и лучше</label>
+                <input type="radio" id="h2r" name="Кальян" value="Хорошо"><label for="h2r"><span class="dots"><i></i><i></i></span>Пойдёт</label>
+                <input type="radio" id="h3r" name="Кальян" value="Отлично"><label for="h3r"><span class="dots"><i></i><i></i><i></i></span>Всё чётко!</label>
             </div>
         </div>
 
         <div class="field">
             <span class="question"><span class="num">05</span>Оцените сервис<span class="opt-tag">по желанию</span></span>
             <div class="rating">
-                <input type="radio" id="s1r" name="Сервис" value="Удовлетворительно"><label for="s1r"><span class="dots"><i></i></span>Удовлетворительно</label>
-                <input type="radio" id="s2r" name="Сервис" value="Хорошо"><label for="s2r"><span class="dots"><i></i><i></i></span>Хорошо</label>
-                <input type="radio" id="s3r" name="Сервис" value="Отлично"><label for="s3r"><span class="dots"><i></i><i></i><i></i></span>Отлично</label>
+                <input type="radio" id="s1r" name="Сервис" value="Удовлетворительно"><label for="s1r"><span class="dots"><i></i></span>Бывало и лучше</label>
+                <input type="radio" id="s2r" name="Сервис" value="Хорошо"><label for="s2r"><span class="dots"><i></i><i></i></span>Пойдёт</label>
+                <input type="radio" id="s3r" name="Сервис" value="Отлично"><label for="s3r"><span class="dots"><i></i><i></i><i></i></span>Всё чётко!</label>
             </div>
         </div>
 
         <div class="field">
             <label class="question" for="comment"><span class="num">06</span>Ваш комментарий или пожелание<span class="opt-tag">по желанию</span></label>
             <textarea id="comment" name="Комментарий" placeholder="Что понравилось, что улучшить?" maxlength="2000"></textarea>
+        </div>
+
+        <div class="field consent-field">
+            <label class="check" for="consent">
+                <input type="checkbox" id="consent" data-required-check>
+                <span class="box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                <span class="check-text">Соглашаюсь на обработку моих имени и телефона, чтобы HookahPlace мог ответить на мой отзыв. <button type="button" class="link" data-privacy>Подробнее</button></span>
+            </label>
+            <div class="field-error">Без согласия мы не сможем принять отзыв</div>
         </div>
 
         <div class="submit-wrap">
@@ -521,6 +612,41 @@
         <div class="wheel" id="wheelM"></div>
     </div>
     <div class="sheet-error" id="sheetError"></div>
+</div>
+
+<!-- Уведомление о данных и куки -->
+<div class="cookie-bar" id="cookieBar" role="region" aria-label="Уведомление о данных" hidden>
+    <p>Мы бережно обращаемся с вашими данными: имя и телефон нужны, только чтобы ответить на ваш отзыв. А ещё мы используем куки, чтобы анкета работала удобнее. <button type="button" class="link" data-privacy>Подробнее</button></p>
+    <button type="button" class="bar-ok" id="cookieOk">Окей</button>
+</div>
+
+<!-- Подробнее о данных -->
+<div class="backdrop" id="privacyBackdrop"></div>
+<div class="privacy" id="privacy" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+    <div class="privacy-body">
+        <h2 id="privacyTitle">Как мы обращаемся с вашими данными</h2>
+        <p>Спасибо, что делитесь впечатлениями! Рассказываем коротко и честно, что происходит с вашими данными.</p>
+        <h3>Что мы получаем</h3>
+        <p>Имя, телефон, дату и время визита, ваши оценки и комментарий. Только то, что вы сами вписали в анкету.</p>
+        <h3>Зачем</h3>
+        <p>Чтобы разобраться в отзыве и, если нужно, связаться с вами: уточнить детали, поблагодарить или исправить то, что не понравилось. Звонить с рекламой и присылать рассылки не будем.</p>
+        <h3>Кто их видит</h3>
+        <p>Только администрация HookahPlace. Мы не продаём ваши данные и не передаём их для рекламы.</p>
+        <h3>Сколько храним</h3>
+        <p>1 год с момента отправки отзыва, после этого удаляем.</p>
+        <h3>Про куки</h3>
+        <p>Куки — это небольшие файлы, которые сайт сохраняет в вашем браузере. Мы используем их только для удобства:</p>
+        <ul>
+            <li>чтобы запомнить, что вы уже видели это уведомление, и не показывать его снова;</li>
+            <li>чтобы ваши ответы не пропали, если страница случайно перезагрузится.</li>
+        </ul>
+        <p>Мы не используем рекламные куки и не отслеживаем, что вы делаете на других сайтах. Удалить куки можно в настройках браузера, анкета продолжит работать.</p>
+        <h3>Если передумаете</h3>
+        <p>Скажите администратору HookahPlace, и мы удалим ваши данные в течение 10 рабочих дней.</p>
+        <h3>Кто отвечает за ваши данные</h3>
+        <p>ИП Борисова Мария Анатольевна, ИНН 631506462381, Самарская область, г. Самара.</p>
+    </div>
+    <div class="privacy-foot"><button type="button" class="submit" id="privacyClose">Понятно</button></div>
 </div>
 
 <!-- Окно с сообщением -->
@@ -698,6 +824,14 @@ function sendToSheets(data) {
         if (d) btn.closest('.field').classList.remove('invalid');
     }
 
+    window.restoreVisit = function (ms) {
+        var d = new Date(+ms);
+        if (isNaN(d) || d > new Date() || d < earliest()) return;
+        apply(d);
+    };
+    window.visitChosen = function () { return chosen ? chosen.getTime() : ''; };
+    $('surveyForm').addEventListener('reset', function () { apply(null); });
+
     btn.addEventListener('click', open);
     $('sheetCancel').addEventListener('click', close);
     backdrop.addEventListener('click', close);
@@ -723,6 +857,10 @@ function validateForm(form) {
         setInvalid(input.closest('.field'), bad);
         if (bad && !firstBad) firstBad = input.type === 'hidden' ? document.getElementById('visitBtn') : input;
     });
+    form.querySelectorAll('[data-required-check]').forEach(function (input) {
+        setInvalid(input.closest('.field'), !input.checked);
+        if (!input.checked && !firstBad) firstBad = input;
+    });
     if (firstBad) {
         (firstBad.closest('.field') || firstBad).scrollIntoView({ behavior: 'smooth', block: 'center' });
         setTimeout(function () { try { firstBad.focus({ preventScroll: true }); } catch (e) {} }, 350);
@@ -731,10 +869,10 @@ function validateForm(form) {
     return true;
 }
 document.querySelectorAll('#surveyForm input, #surveyForm textarea').forEach(function (input) {
-    var evt = input.type === 'radio' ? 'change' : 'input';
+    var evt = (input.type === 'radio' || input.type === 'checkbox') ? 'change' : 'input';
     input.addEventListener(evt, function () {
         var field = input.closest('.field');
-        if (field && (input.type === 'radio' || input.value.trim())) field.classList.remove('invalid');
+        if (field && (input.type === 'radio' || input.checked || (input.type !== 'checkbox' && input.value.trim()))) field.classList.remove('invalid');
     });
 });
 
@@ -767,8 +905,82 @@ document.getElementById('noticeBtn').addEventListener('click', hideNotice);
 document.getElementById('noticeBackdrop').addEventListener('click', hideNotice);
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && document.getElementById('notice').classList.contains('open')) hideNotice(); });
 
+// ---- Уведомление о данных и куки ----
+(function () {
+    var bar = document.getElementById('cookieBar');
+    var seen = false;
+    try { seen = localStorage.getItem('hp_notice_ok') === '1'; } catch (e) {}
+    if (!seen) setTimeout(function () { bar.hidden = false; }, 1000);
+    document.getElementById('cookieOk').addEventListener('click', function () {
+        try { localStorage.setItem('hp_notice_ok', '1'); } catch (e) {}
+        bar.hidden = true;
+    });
+})();
+
+// ---- Окно «Подробнее» ----
+(function () {
+    var box = document.getElementById('privacy'), bd = document.getElementById('privacyBackdrop');
+    var lastFocus = null;
+    function open(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }   // ссылка внутри подписи галочки не должна её переключать
+        lastFocus = document.activeElement;
+        box.classList.add('open'); bd.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        box.querySelector('.privacy-body').scrollTop = 0;
+        document.getElementById('privacyClose').focus();
+    }
+    function close() {
+        box.classList.remove('open'); bd.classList.remove('open');
+        document.body.style.overflow = '';
+        if (lastFocus) try { lastFocus.focus(); } catch (e) {}
+    }
+    document.querySelectorAll('[data-privacy]').forEach(function (b) { b.addEventListener('click', open); });
+    document.getElementById('privacyClose').addEventListener('click', close);
+    bd.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && box.classList.contains('open')) close(); });
+})();
+
+// ---- Черновик: ответы не пропадают при перезагрузке страницы ----
+var DRAFT_KEY = 'hp_draft';
+function saveDraft() {
+    var f = document.getElementById('surveyForm');
+    var d = {
+        name: f.elements['Имя'].value,
+        phone: f.elements['Телефон'].value,
+        comment: f.elements['Комментарий'].value,
+        hookah: (f.querySelector('[name="Кальян"]:checked') || {}).value || '',
+        service: (f.querySelector('[name="Сервис"]:checked') || {}).value || '',
+        visit: window.visitChosen ? window.visitChosen() : '',
+        consent: document.getElementById('consent').checked
+    };
+    try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify(d)); } catch (e) {}
+}
+function clearDraft() { try { sessionStorage.removeItem(DRAFT_KEY); } catch (e) {} }
+(function () {
+    var f = document.getElementById('surveyForm'), d = null;
+    try { d = JSON.parse(sessionStorage.getItem(DRAFT_KEY) || 'null'); } catch (e) {}
+    if (d) {
+        if (d.name) f.elements['Имя'].value = d.name;
+        if (d.phone) f.elements['Телефон'].value = d.phone;
+        if (d.comment) f.elements['Комментарий'].value = d.comment;
+        ['hookah', 'service'].forEach(function (k, i) {
+            var r = f.querySelector('[name="' + (i ? 'Сервис' : 'Кальян') + '"][value="' + d[k] + '"]');
+            if (d[k] && r) r.checked = true;
+        });
+        if (d.visit && window.restoreVisit) window.restoreVisit(d.visit);
+        document.getElementById('consent').checked = !!d.consent;
+    }
+    f.addEventListener('input', saveDraft);
+    f.addEventListener('change', saveDraft);
+    document.getElementById('sheetDone').addEventListener('click', function () { setTimeout(saveDraft, 0); });
+    document.querySelectorAll('.rating label').forEach(function (l) { l.addEventListener('click', function () { setTimeout(saveDraft, 0); }); });
+})();
+
 // ---- Текст сообщения в бот ----
+// В таблицу уходят прежние значения (Удовлетворительно / Хорошо / Отлично),
+// а гость и сообщение в ВК видят новые подписи
 var MARK = { 'Удовлетворительно': '●○○', 'Хорошо': '●●○', 'Отлично': '●●●' };
+var LABEL = { 'Удовлетворительно': 'Бывало и лучше', 'Хорошо': 'Пойдёт', 'Отлично': 'Всё чётко!' };
 function buildMessage(d) {
     var lines = ['💭 Новый отзыв гостя', ''];
     lines.push('🗓 Визит: ' + d['Дата и время посещения']);
@@ -777,8 +989,8 @@ function buildMessage(d) {
     lines.push('');
     if (d['Кальян'] || d['Сервис']) {
         lines.push('━━━━━━━━━━━━━━━━━━');
-        if (d['Кальян']) lines.push('💨 Кальян: ' + MARK[d['Кальян']] + ' ' + d['Кальян']);
-        if (d['Сервис']) lines.push('🤝 Сервис: ' + MARK[d['Сервис']] + ' ' + d['Сервис']);
+        if (d['Кальян']) lines.push('💨 Кальян: ' + MARK[d['Кальян']] + ' ' + LABEL[d['Кальян']]);
+        if (d['Сервис']) lines.push('🤝 Сервис: ' + MARK[d['Сервис']] + ' ' + LABEL[d['Сервис']]);
     }
     if (d['Комментарий'] && d['Комментарий'].trim()) {
         lines.push('━━━━━━━━━━━━━━━━━━');
@@ -789,6 +1001,7 @@ function buildMessage(d) {
 }
 
 function goThanks(d) {
+    clearDraft();
     try { sessionStorage.setItem('guestName', d['Имя'].trim()); } catch (e) {}
     location.replace('thanks.html');
 }
@@ -802,8 +1015,10 @@ document.getElementById('surveyForm').addEventListener('submit', function (e) {
     new FormData(e.target).forEach(function (v, k) { data[k] = v; });
     var text = buildMessage(data);
 
-    // Тестовый режим: отправка ещё не подключена
-    if (!VK_TOKEN || !VK_USER_ID) {
+    var vkReady = !!(VK_TOKEN && VK_USER_ID);
+
+    // Тестовый режим: не подключены ни ВК, ни таблица
+    if (!vkReady && !SHEETS_URL) {
         if (window.console) console.log(text);
         showNotice('Тестовый режим', 'Анкета заполнена верно, но отправка пока не подключена — ответы никуда не ушли.<br><br><span style="color:#ddd;white-space:pre-line;text-align:left;display:block;font-size:13px">' + escapeHtml(text) + '</span>');
         return;
@@ -812,7 +1027,15 @@ document.getElementById('surveyForm').addEventListener('submit', function (e) {
     var btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.textContent = 'Отправка...';
+
+    // В таблицу пишем всегда, когда она подключена, независимо от ВК
     sendToSheets(data);
+
+    // ВК не подключён — после записи в таблицу сразу благодарим гостя
+    if (!vkReady) {
+        setTimeout(function () { goThanks(data); }, 400);
+        return;
+    }
 
     var cbName = 'vkCallback_' + Math.floor(Math.random() * 1e6);
     var script = document.createElement('script');
